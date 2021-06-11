@@ -7,12 +7,12 @@ It also rotates the starting point and respawns 180 degrees.
 # Install
 The KMP tool can be installed as a python package.
 ```
-pip install git+https://github.com/Robert-N7/abmatt.git
+pip install git+https://github.com/Robert-N7/akmpt.git
 ```
 
 # Usage
-KMP reversal is done via command line.
+KMP reversal is done via command line, or through python
 
 ```
-akmpt reverse <kmp_file> [<destination>] -o
+python -m akmpt reverse <kmp_file> [<destination>] -o
 ```
