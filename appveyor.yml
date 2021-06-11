@@ -1,0 +1,43 @@
+image:
+  - Visual Studio 2019
+  - Ubuntu
+
+environment:
+  matrix:
+    - TOXENV: py39
+      fast_finish: true
+      PYTHON_V: "3.9"
+      PYTHON: "C:\\Python39-x64"
+
+stack: python %PYTHON_V%
+
+install:
+  - python --version
+  - python -m pip install tox
+  - python -m pip install -r requirements.txt
+
+build_script:
+  - export PYTHONPATH=$(pwd)
+
+test_script:
+  - python -m tox -e $TOXENV
+
+
+for:
+-
+  matrix:
+    only:
+      - image: Visual Studio 2019
+
+  install:
+    - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%;
+    - python --version
+    - python -m pip install tox
+    - python -m pip install -r requirements.txt
+
+  build_script:
+    # NSIS
+    - SET PYTHONPATH=%CD%
+
+  test_script:
+    - python -m tox -e %TOXENV%
