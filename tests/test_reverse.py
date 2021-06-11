@@ -8,4 +8,4 @@ class TestReverse(Base):
         reversed = reverse.reverse_kmp(original)
         normal = reverse.reverse_kmp(reversed)
         normal.save(self._get_tmp(), overwrite=True)
-        self._test_pack_eq(reversed)
+        self.assertEqual(original, normal)

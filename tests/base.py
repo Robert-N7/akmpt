@@ -12,18 +12,6 @@ class Base(unittest.TestCase):
         except (AttributeError, FileNotFoundError):
             pass
 
-    def _test_pack_eq(self, fname):
-        if type(fname) is str:
-            original = Kmp(self._get_test_fname(fname))
-        else:
-            original = fname
-        name = original.name
-        original.save(self._get_tmp('kmp'), overwrite=True)
-        if not file_compare(name, original.name):
-            new = Kmp(original.name)
-            self.assertTrue(original == new)
-            raise ValueError(f'{name} packed not equal!')
-
     def _get_test_fname(self, filename):
         return os.path.join(os.path.dirname(__file__), 'fixtures', filename)
 

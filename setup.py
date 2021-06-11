@@ -26,7 +26,7 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=['colorama'],
     classifiers=CLASSIFIERS,
-    url='',
+    url='https://github.com/Robert-N7/akmpt',
     license='GPLv3',
     author='Robert',
     author_email='robert7.nelson@gmail.com',
