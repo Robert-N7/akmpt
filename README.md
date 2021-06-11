@@ -14,5 +14,5 @@ pip install git+https://github.com/Robert-N7/akmpt.git
 KMP reversal is done via command line, or through python
 
 ```
-python -m akmpt reverse <kmp_file> [<destination>] -o
+python -m akmpt reverse <kmp_file> [<destination>] [-o]
 ```
