@@ -7,9 +7,11 @@ It also rotates the starting point around the start line and respawns around the
 # Install
 The KMP tool can be installed as a python package.
 ```
-pip install git+https://github.com/Robert-N7/abmatt.git
+pip install git+https://github.com/Robert-N7/akmpt.git
 ```
 
+# Usage
+KMP reversal is done via command line, or through python
 # Reversal
 KMP reversal is done via command line.
 
