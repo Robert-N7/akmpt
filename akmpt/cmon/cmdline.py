@@ -16,7 +16,6 @@ class ArgRunner:
     flag_shortcuts = None   # -f
     named_args = None       # destination=<file>
     named_shortcuts = None  # -d <file>
-    named_defaults = None
     default = None          # for random arg
     positional_args = None  # Must be at beginning in order (required)
     on_unknown = ON_UNKNOWN_ERR
@@ -27,7 +26,10 @@ class ArgRunner:
                 setattr(self, self.flags[i], False)
         if self.named_args:
             for i in range(len(self.named_args)):
-                val = self.named_defaults[i] if self.named_defaults else None
+                try:
+                    val = getattr(self, self.named_args[i] + '_default')
+                except AttributeError:
+                    val = None
                 setattr(self, self.named_args[i], val)
         setattr(self, self.default, None)
 
@@ -49,6 +51,8 @@ class ArgRunner:
             a = args[j]
             if self.positional_args and j < len(self.positional_args):
                 setattr(self, self.positional_args[j], a)
+                j += 1
+                continue
             flag = a.startswith('-')
             a = a.lstrip('-')
             i = a.find('=')

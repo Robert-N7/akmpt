@@ -15,7 +15,7 @@ CLASSIFIERS = [
 setup(
     name='akmpt',
     description='A tool that helps reverse KMP files.',
-    version='v0.0.1',
+    version='v0.2.0',
     entry_points={
         'console_scripts': [
             'akmpt = akmpt.__main__:main'

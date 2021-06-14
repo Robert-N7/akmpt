@@ -1,4 +1,7 @@
+import math
 import os
+
+from akmpt.cmon import pmap, mapa
 
 from akmpt.lib.autofix import AutoFix
 from akmpt.lib.packing.pack_kmp import PackKmp
@@ -8,6 +11,7 @@ from akmpt.stage_info import StageInfo
 from akmpt.start_position import StartPosition
 from akmpt.lib.binfile import BinFile
 from akmpt.lib.pack_interface import Packable
+from akmpt.utils import distance
 
 
 class Kmp(Packable):
@@ -18,6 +22,7 @@ class Kmp(Packable):
         return len(self.end_positions) > 0
 
     def __init__(self, name, parent=None, read_file=True):
+        self.object_map = None
         self.name = os.path.abspath(name)
         binfile = BinFile(self.name) if read_file else None
         if binfile:
@@ -25,8 +30,40 @@ class Kmp(Packable):
         else:
             self.begin()
 
+    def __create_obj_map(self):
+        self.object_map = {}
+        for x in self.game_objects:
+            y = self.object_map.get(x.name)
+            if not y:
+                self.object_map[x.name] = [x]
+            else:
+                y.append(x)
+        return self.object_map
+
     def get_height_at(self, x=0, z=0):
         return 10000
+
+    def get_closest_cpu_pos(self, point):
+        mins = [math.inf, math.inf]
+        min_pos = [None, None]
+        for r in self.cpu_routes:
+            for pos in r:
+                d = distance(pos.position, point)
+                if d < mins[0]:
+                    mins[1] = mins[0]
+                    min_pos[1] = min_pos[0]
+                    mins[0] = d
+                    min_pos[0] = pos
+                elif d < mins[1]:
+                    mins[1] = d
+                    min_pos[1] = pos
+        return min_pos
+
+    def get_start_checkpoint(self):
+        for group in self.check_points:
+            for x in group:
+                if x.key == 0:
+                    return x
 
     def begin(self):
         self.version = 0x9d8
@@ -69,6 +106,14 @@ class Kmp(Packable):
             self.routes == other.routes and \
             self.pan_cam == other.pan_cam and \
             self.movie_cam == other.movie_cam
+
+    def __getitem__(self, item):
+        if type(item) is str:
+            if not self.object_map:
+                self.__create_obj_map()
+            return self.object_map[item]
+        else:
+            return [x for x in self.game_objects if x.id == item]
 
     def check(self):
         if not self.respawns:

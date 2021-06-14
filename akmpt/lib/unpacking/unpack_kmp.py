@@ -6,7 +6,7 @@ from akmpt.cannon import Cannon
 from akmpt.checkpoint import CheckPointGroup, CheckPoint
 from akmpt.cpu_route import CpuRoute, CpuRoutePoint
 from akmpt.end_position import EndPosition
-from akmpt.game_object import GameObject
+from akmpt.game_object import GameObject, ID_TO_NAME
 from akmpt.item_route import ItemRoute, ItemRoutePoint
 from akmpt.lib.unpacking.unpack_section import UnpackSection, UnpackHead
 from akmpt.respawn import Respawn
@@ -105,6 +105,7 @@ class UnpackGobj(UnpackSection):
         routes = self.node.routes
         for n in self.nodes:
             n.route = self.resolve(routes, n.route)
+            n.name = ID_TO_NAME[n.id]
         self.node.game_objects = self.nodes
 
     def unpack_data(self, binfile):
