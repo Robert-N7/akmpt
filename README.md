@@ -30,7 +30,7 @@ Since it is unclear if routes should be reversed, that is left to the user. This
 akmpt reverse course.kmp --route=10 -o
 ```
 
-#Rotation
+# Rotation
 Rotation is also left to the user on objects, as some may not need rotation.
 ```
 akmpt rotate <filename> [<destination> group=<group> item=<item> rotation=<rotation> direction=<direction> -o]
