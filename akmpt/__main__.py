@@ -45,7 +45,7 @@ class ReverseRunner(GenericRunner):
 class RotateRunner(GenericRunner):
     cmd = 'rotate'
     named_args = ('destination', 'group', 'item', 'rotation', 'direction')
-    help_string = 'rotates the kmp <group> [<item>] by rotation (default 180)'
+    help_string = 'Rotates the kmp <group> [<item>] by rotation (default 180)'
     rotation_default = 180
     group_default = 'game_objects'
     direction_default = 'y'

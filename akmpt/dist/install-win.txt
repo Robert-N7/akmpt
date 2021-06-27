@@ -1,0 +1,11 @@
+===================================================================================================
+ANOOB'S KMP TOOL
+Version 0.2.0
+Robert Nelson
+OS: Windows 10 64-bit
+Github: https://github.com/Robert-N7/akmpt
+===================================================================================================
+Thank you for downloading ANoob's KMP Tool! ANoob's KMP Tool is a command-line tool for
+editing Mario Kart Wii KMP files. For usage help, visit the github repository.
+
+To install, run install.exe

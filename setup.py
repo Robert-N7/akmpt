@@ -24,7 +24,7 @@ setup(
     packages=setuptools.find_packages(),
     long_description=long_description,
     long_description_content_type="text/markdown",
-    install_requires=['colorama'],
+    install_requires=['colorama', 'numpy'],
     classifiers=CLASSIFIERS,
     url='https://github.com/Robert-N7/akmpt',
     license='GPLv3',

@@ -20,7 +20,7 @@ install:
 build_script:
   - export PYTHONPATH=$(pwd)
   - python -m pip install .
-  - python -m akmpt --help
+  - python -m akmpt reverse tests/fixtures/beginner.kmp tmp.kmp
 
 test_script:
   - python -m tox -e $TOXENV

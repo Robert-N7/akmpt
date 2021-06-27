@@ -4,3 +4,9 @@
 Temp*
 tmp*
 venv*
+
+akmpt/build/main*
+akmpt/dist/main*
+akmpt/dist/akmpt*
+akmpt/build/version
+akmpt/main.spec

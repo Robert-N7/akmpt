@@ -87,35 +87,62 @@ class ArgRunner:
 
 
 def print_help(args, f_map, usage):
-    s = usage + '\n'
     if args:
+        s = ''
         for a in args:
             if a not in f_map:
                 raise ValueError(f'No such cmd {a}')
-            s += '\t' + a + '\t' + f_map[a].help_string + '\n'
+            runner = f_map[a]
+            s += a
+            for x in runner.positional_args:
+                s += ' <' + x + '>'
+            if len(runner.named_args) or len(runner.flags):
+                s += ' ['
+                for i in range(len(runner.named_args)):
+                    try:
+                        named = '-' + runner.named_shortcuts[i]
+                    except IndexError:
+                        named = '--' + runner.named_args[i]
+                    s += named + '=<' + runner.named_args[i] + '> '
+                for x in runner.flags:
+                    s += '--' + x + ' '
+                s = s[:-1] + ']'
+            s += '\n'
+            s += '  ' + a + ' ' * (9 - (len(a) % 8)) + runner.help_string + '\n'
     else:
+        s = usage + '\n'
         for x in f_map:
-            s += '\t' + x + '\t' + f_map[x].help_string + '\n'
-        s += '\t-h,--help [<cmd>]\t' + 'Display help message ' + '\n'
+            s += '  ' + x + ' ' * (9 - (len(x) % 8)) + f_map[x].help_string + '\n'
+        s += '  -h,--help [<cmd>]    Display help message' + '\n'
     print(s)
 
 
-def run_cmds(args, usage=f'usage: <cmd> <args>', arg_runners=None):
+def run_cmds(args, usage=f'usage: <cmd> <args>', arg_runners=None, default=None, additional_help=''):
     """
     Runs commands using the function map
     :param args: all arguments
     :param usage: usage string
     :param arg_runners: list of ArgRunner classes, default is all subclasses
+    :param default: the default command to run if none specified
+    :param additional_help: help string to add at the bottom of generic help.
     :return: results from functions
     """
     if arg_runners is None:
         arg_runners = ArgRunner.__subclasses__()
+    if not args:
+        if default is None:
+            default = '-h'
+        args.append(default)
+
     m = mapa('cmd', arg_runners)
     results = []
     while args is not None and len(args):
         arg = args.pop(0)
         if arg in ('-h', '--help'):
             print_help(args, m, usage)
+            if not args:
+                print(additional_help)
+            return results
         else:
             k = m[arg]()
             args = k.parse_args(args)

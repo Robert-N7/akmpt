@@ -1,0 +1,10 @@
+IMPORTANT:
+Building the distribution is done through build.py and inputting the version number.
+It uses the 'pyinstaller' package to build the binaries. It creates a single file/folder in the 'dist' folder.
+The installer for distributions is also created, but may require additional dependencies:
+
+For Windows you need the following on your system path:
+1. makensis (windows installer)
+    a. Additionally the EnVar plug-in is required.
+2. 7z (zipping installer)
+

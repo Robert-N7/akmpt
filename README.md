@@ -5,7 +5,9 @@ It also rotates the starting point around the start line and respawns around the
 *It is only meant as a starting place for reversal, and further manual adjustments will be required.*
 
 # Install
-The KMP tool can be installed as a python package.
+Download compiled [releases](https://github.com/Robert-N7/akmpt/releases) from the release page.
+
+The KMP tool can also be installed as a python package.
 ```
 pip install git+https://github.com/Robert-N7/akmpt.git
 ```
