@@ -45,3 +45,45 @@ class ConnectedPointCollection(PointCollection):
     def __eq__(self, o):
         return self is o or super().__eq__(o) \
                and self.points == o.points and self.settings == o.settings
+
+    def add_next_group(self, group):
+        self.next_groups.append(group)
+        group.prev_groups.append(self)
+    
+    def set_next_groups(self, groups):
+        for x in self.next_groups:
+            try:
+                x.prev_groups.remove(self)
+            except ValueError:
+                pass
+        self.next_groups = []
+        for x in groups:
+            self.add_next_group(x)
+    
+    def remove_next_group(self, group):
+        try:
+            self.next_groups.remove(group)
+            group.prev_groups.remove(self)
+        except ValueError:
+            pass
+
+    def add_prev_group(self, group):
+        self.prev_groups.append(group)
+        group.next_groups.append(self)
+
+    def remove_prev_group(self, group):
+        try:
+            self.prev_groups.remove(group)
+            group.next_groups.remove(self)
+        except ValueError:
+            pass
+    
+    def set_prev_groups(self, groups):
+        for x in self.prev_groups:
+            try:
+                x.next_groups.remove(self)
+            except ValueError:
+                pass
+        self.prev_groups = []
+        for x in groups:
+            self.add_prev_group(x)

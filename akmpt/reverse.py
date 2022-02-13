@@ -12,17 +12,30 @@ def reverse_kmp(kmp):
         kmp = Kmp(kmp)
     for routes in [kmp.check_points, kmp.item_routes, kmp.cpu_routes]:
         for route in routes:
-            reverse_route(route)
+            reverse_route(route, kmp)
         first = routes[0]
         if len(first.next_groups):
             new_first = first.next_groups[0]
             routes.remove(new_first)
             routes.insert(0, new_first)
+    reverse_cpu_offroad_routes(kmp.cpu_routes)
     reorder_key_checkpoints(kmp.check_points)
     construct_linked_connections(kmp.cpu_routes)
     reverse_respawns(kmp)
     reverse_start(kmp)
     return kmp
+
+
+def reverse_cpu_offroad_routes(cpu_routes):
+    for route in cpu_routes:
+        if route[-1].settings[0] == 1:
+            try:
+                route[-1].settings[0] = 0
+                route[-2].settings[0] = 0
+                route[0].settings[0] = 1
+                route[1].settings[0] = 2
+            except IndexError:
+                pass
 
 
 def reverse_start(kmp):
@@ -42,7 +55,6 @@ def reverse_start(kmp):
         start.position = get_closest_p_on_line(start.position, p1.position, p2.position)
         towards = p2 if p2 in p1.next else p1
         start.rotation[1] = get_y_rotation(start.position, towards.position)
-        assert -90 < start.rotation[1] < 90
 
 
 def reverse_respawns(kmp):
@@ -101,7 +113,7 @@ def reorder_key_checkpoints(checkpoints):
         item.key = 0
 
 
-def reverse_route(route):
+def reverse_route(route, kmp=None):
     route.points.reverse()
     if issubclass(type(route), ConnectedPointCollection):
         t = route.prev_groups
@@ -109,24 +121,24 @@ def reverse_route(route):
         route.next_groups = t
         if type(route) is CheckPointGroup:
             if route[-1].key == 0:
-                start_line = route[-1]
-                route.points = route.points[:-1]
-                route.points.insert(0, start_line)
-                route.points[1].next = start_line
-                start_line.previous = route.points[1]
-                start_line.next = None
-                route.points[-1].previous = None
+                start_line = route.points.pop(-1)
+                if len(route.next_groups) == 1:
+                    next = route.next_groups[0]
+                    next.points.append(start_line)
+                else:   # add a new checkpoint group in
+                    ck_group = CheckPointGroup([start_line])
+                    kmp.check_points.insert(0, ck_group)
+                    ck_group.set_next_groups(route.next_groups)
+                    route.set_next_groups([ck_group])
             for check in route:
-                t = check.next
-                check.next = check.previous
-                check.previous = t
                 t = check.left_pole
                 check.left_pole = check.right_pole
                 check.right_pole = t
+            route.rebuild_pointers()
     else:
         if len(route.points) > 1:
-            s1 = route.points[-1].settings
-            s0 = route.points[0].settings
-            if s1[0] != 0 and s0[0] == 0:
-                s0[0] = s1[0]
-                s1[0] = 0
+            p1 = route.points[-1]
+            p0 = route.points[0]
+            if p1.speed != 0 and p0.speed == 0:
+                p0.speed = p1.speed
+                p1.speed = 0

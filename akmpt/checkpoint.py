@@ -4,6 +4,18 @@ from akmpt.base import Base, ConnectedPointCollection
 class CheckPointGroup(ConnectedPointCollection):
     MAGIC = 'CKPH'
 
+    def rebuild_pointers(self):
+        pts = self.points
+        for i in range(len(self)):
+            if i < len(self) - 1:
+                pts[i].next = pts[i + 1]
+            else:
+                pts[i].next = None
+            if i == 0:
+                pts[i].previous = None
+            else:
+                pts[i].previous = pts[i - 1]
+
 
 class CheckPoint(Base):
     MAGIC = 'CKPT'
@@ -25,3 +37,4 @@ class CheckPoint(Base):
                and self.respawn == o.respawn \
                and self.right_pole == o.right_pole\
                and self.left_pole == o.left_pole
+

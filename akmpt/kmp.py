@@ -83,6 +83,21 @@ class Kmp(Packable):
         self.movie_cam = None
         self.additional_values = [0] * 15
 
+    def recalc_key_checkpoints(self):
+        group = self.check_points[0]
+        self.__recalc_key_checkpoint_group(0, group, [])
+
+    def __recalc_key_checkpoint_group(self, key, group, groups_done):
+        if group in groups_done:
+            return
+        for x in group:
+            if x.key != 0xff:
+                x.key = key
+                key += 1
+        groups_done.append(group)
+        for x in group.next_groups:
+            self.__recalc_key_checkpoint_group(key, x, groups_done)
+
     def unpack(self, binfile):
         UnpackKmp(self, binfile)
 

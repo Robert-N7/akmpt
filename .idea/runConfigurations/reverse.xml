@@ -12,7 +12,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/akmpt/__main__.py" />
-    <option name="PARAMETERS" value="--help rotate" />
+    <option name="PARAMETERS" value="reverse C:\Users\rober\PycharmProjects\abmatt\tmp\rainbow_course_r\ct.d\course.kmp -o" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
